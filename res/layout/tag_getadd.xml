@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+  
+   android:background="@drawable/new_add"
+    tools:context="com.pps.target" >
+
+    <ImageButton
+        android:id="@+id/choice_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/choice_address_selector" />
+
+    <ImageButton
+        android:id="@+id/bn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="82dp"
+        android:background="@drawable/bn_ok_selector"
+        android:scaleType="centerInside" />
+
+    <EditText
+        android:id="@+id/et_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bn_ok"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="54dp"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>
