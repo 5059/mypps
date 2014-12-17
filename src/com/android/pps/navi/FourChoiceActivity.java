@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.android.pps.PPSApplication;
 import com.android.pps.R;
 import com.android.pps.baidu.RoutePlanDemo;
+import com.android.pps.target.AddTartgetActivity;
+import com.android.pps.target.ChooseAddrActivity;
 import com.android.pps.util.Location;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -38,7 +40,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 	private final static int SCAN_REQUEST_CODE = 1;
 	private final static int CHOOSEIMG_REQUEST_CODE = 2;
 	
-	private ImageButton imgBtn_choice2d, imgBtn_choiceAddr, imgBtn_scan2d, imgBtn_editAddr;
+	private ImageButton imgBtn_choice2d, imgBtn_chooseAddr, imgBtn_scan2d, imgBtn_editAddr;
 	
 	private Location startLoc = null, endLoc = null;
 
@@ -47,7 +49,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.nav_fourchoice);
 		imgBtn_choice2d = (ImageButton) findViewById(R.id.bn_choice2d);
-		imgBtn_choiceAddr = (ImageButton) findViewById(R.id.bn_choiceAdd);
+		imgBtn_chooseAddr = (ImageButton) findViewById(R.id.bn_choiceAdd);
 		imgBtn_scan2d = (ImageButton) findViewById(R.id.bn_scan2d);
 		imgBtn_editAddr = (ImageButton) findViewById(R.id.bn_editAdd);
 
@@ -77,6 +79,16 @@ public class FourChoiceActivity extends ActionBarActivity {
 				startActivityForResult(intent, CHOOSEIMG_REQUEST_CODE);
 			}
 
+		});
+		
+		imgBtn_chooseAddr.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent toChooseAddr = new Intent(FourChoiceActivity.this,
+						ChooseAddrActivity.class);
+				startActivity(toChooseAddr);
+			}
 		});
 	}
 

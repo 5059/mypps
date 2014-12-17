@@ -16,7 +16,7 @@ import com.android.pps.R;
 
 public class AddTartgetActivity extends ActionBarActivity {
 
-	private ImageButton imgBtn_ok;
+	private ImageButton imgBtn_ok, imgBtn_chooseAddr;
 	private EditText editT_address;
 	private String addrStr;
 
@@ -27,7 +27,8 @@ public class AddTartgetActivity extends ActionBarActivity {
 
 		editT_address = (EditText) findViewById(R.id.et_add);
 		imgBtn_ok = (ImageButton) findViewById(R.id.bn_ok);
-
+		imgBtn_chooseAddr = (ImageButton) findViewById(R.id.choice_add);
+		
 		imgBtn_ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -43,6 +44,16 @@ public class AddTartgetActivity extends ActionBarActivity {
 				toAddInfo.putExtras(bundle);
 				startActivity(toAddInfo);
 				finish();
+			}
+		});
+		
+		imgBtn_chooseAddr.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent toChooseAddr = new Intent(AddTartgetActivity.this,
+						ChooseAddrActivity.class);
+				startActivity(toChooseAddr);
 			}
 		});
 

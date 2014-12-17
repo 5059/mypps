@@ -74,8 +74,9 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+         >
         <activity
+            android:theme="@style/concealTitle"
             android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -101,36 +102,49 @@
             android:value="rdiixRDMr7PKWDKBGh4MYAEk" />
         
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.navi.FourChoiceActivity"
             android:label="@string/app_name" >
         </activity>
         
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.target.AddTartgetActivity"
             android:label="@string/app_name" >
         </activity> 
         
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.target.EditTargetActivity"
             android:label="@string/app_name" >
         </activity>
         
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.target.Gen2dResultActivity"
             android:label="@string/app_name" >
         </activity> 
         <activity
+            android:theme="@style/AppTheme"
+            android:name="com.android.pps.target.ChooseAddrActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.navi.EditDesActivity"
             android:label="@string/app_name" >
         </activity>       
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.navi.Scan2dResultActivity"
             android:label="@string/app_name" >
         </activity>       
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.baidu.BNavigatorActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"/>
         <activity
+            android:theme="@style/concealTitle"
             android:name="com.android.pps.baidu.RoutePlanDemo"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
             android:label="路径规划导航" >
