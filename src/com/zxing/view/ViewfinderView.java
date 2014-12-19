@@ -19,6 +19,7 @@ package com.zxing.view;
 import java.util.Collection;
 import java.util.HashSet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -41,7 +42,9 @@ import com.zxing.camera.CameraManager;
  * animation and result points.
  * 
  */
+ @SuppressWarnings("unused")
 public final class ViewfinderView extends View {
+	
 	private static final String TAG = "log";
 	/**
 	 * 刷新界面的时间
@@ -130,6 +133,7 @@ public final class ViewfinderView extends View {
 		possibleResultPoints = new HashSet<ResultPoint>(5);
 	}
 
+	@SuppressLint("DrawAllocation") 
 	@Override
 	public void onDraw(Canvas canvas) {
 		//中间的扫描框，你要修改扫描框的大小，去CameraManager里面修改

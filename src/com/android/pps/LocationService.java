@@ -19,7 +19,7 @@ import com.baidu.navisdk.BNaviEngineManager.NaviEngineInitListener;
 public class LocationService implements Runnable{
 
 	private LocationMode tempMode = LocationMode.Hight_Accuracy;
-	private String tempcoor="gcj02";
+	private String tempcoor = "gcj02";//bd09ll
 	private Context context;
 	private boolean mIsEngineInitSuccess = false;
 	
@@ -88,7 +88,6 @@ public class LocationService implements Runnable{
 		option.setCoorType(tempcoor);//返回的定位结果是百度经纬度，如果不指定，默认返回百度坐标系.百度手机地图对外接口中的坐标系默认是bd09ll，如果配合百度地图产品的话，需要注意坐标系对应问题。 
 		int span=100;
 		option.setScanSpan(span);
-		option.setIsNeedAddress(true);
 		option.setIsNeedAddress(true);	//设置是否要返回地址信息，默认为无地址信息。 
 		mLocationClient.setLocOption(option);
 	}
@@ -125,12 +124,12 @@ public class LocationService implements Runnable{
                     @Override
                     public void onAuthResult(int status, String msg) {
                     	Log.i("DemoMain", "a onAuthResult");
-                        String str = null;
-                        if (0 == status) {
-                            str = "key校验成功!";
-                        } else {
-                            str = "key校验失败, " + msg;
-                        }
+//                        String str = null;
+//                        if (0 == status) {
+//                            str = "key校验成功!";
+//                        } else {
+//                            str = "key校验失败, " + msg;
+//                        }
 //                        Toast.makeText(LocationService.this.context, str,
 //                                Toast.LENGTH_LONG).show();
                     }

@@ -23,9 +23,10 @@ import android.widget.Toast;
 import com.android.pps.PPSApplication;
 import com.android.pps.R;
 import com.android.pps.baidu.RoutePlanDemo;
-import com.android.pps.target.AddTartgetActivity;
 import com.android.pps.target.ChooseAddrActivity;
+import com.android.pps.util.Address;
 import com.android.pps.util.Location;
+import com.android.pps.util.Untilly;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -39,6 +40,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 
 	private final static int SCAN_REQUEST_CODE = 1;
 	private final static int CHOOSEIMG_REQUEST_CODE = 2;
+	private final static int CHOOSE_ADDRESS_CODE = 3;
 	
 	private ImageButton imgBtn_choice2d, imgBtn_chooseAddr, imgBtn_scan2d, imgBtn_editAddr;
 	
@@ -56,6 +58,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 		imgBtn_editAddr.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//跳转到编辑目的地动作
 				Intent toeditAdd = new Intent(FourChoiceActivity.this, EditDesActivity.class);
 				startActivity(toeditAdd);
 			}
@@ -64,6 +67,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 		imgBtn_scan2d.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//跳转到扫描二维码动作
 				Intent openCameraIntent = new Intent(FourChoiceActivity.this, MipcaActivityCapture.class);
 				startActivityForResult(openCameraIntent, SCAN_REQUEST_CODE);
 			}
@@ -73,6 +77,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View arg0) {
+				//跳转到选择二维码图片动作
 				Intent intent = new Intent();
 				intent.setType("image/*");
 				intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -87,7 +92,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				Intent toChooseAddr = new Intent(FourChoiceActivity.this,
 						ChooseAddrActivity.class);
-				startActivity(toChooseAddr);
+				startActivityForResult(toChooseAddr, CHOOSE_ADDRESS_CODE);
 			}
 		});
 	}
@@ -107,7 +112,7 @@ public class FourChoiceActivity extends ActionBarActivity {
     				String result = bundle.getString("result");
     				//解析扫描结果,提取出经纬度
     				try {
-						endLoc = parseToLocation(result);
+						endLoc = Untilly.parseToLocation(result);
 						//获取起点位置信息
 						startLoc = (Location) ((PPSApplication)getApplicationContext()).get("startLoc");
 						Intent intent = new Intent(FourChoiceActivity.this, RoutePlanDemo.class);
@@ -136,7 +141,7 @@ public class FourChoiceActivity extends ActionBarActivity {
 					String result = lResult.getText().toString();
     				//解析扫描结果,提取出经纬度
     				try {
-						endLoc = parseToLocation(result);
+						endLoc = Untilly.parseToLocation(result);
 						//获取起点位置信息
 						startLoc = (Location) ((PPSApplication)getApplicationContext()).get("startLoc");
 						Intent intent = new Intent(FourChoiceActivity.this, RoutePlanDemo.class);
@@ -154,23 +159,30 @@ public class FourChoiceActivity extends ActionBarActivity {
 					Toast.makeText(FourChoiceActivity.this, "您选择的不是二维码图片或不是jpg文件", Toast.LENGTH_SHORT).show();
 				}
     			break;
+    		case CHOOSE_ADDRESS_CODE:	//返回的是选取的address信息
+    			Bundle bundle = data.getExtras();
+				Address address = (Address) bundle.getSerializable("addressObj");
+
+				//获取起点位置信息
+				startLoc = (Location) ((PPSApplication)getApplicationContext()).get("startLoc");
+				//获取终点位置信息
+				endLoc = new Location();
+				endLoc.setAddress(address.getAddress());
+				endLoc.setLatitude(address.getLatitude());
+				endLoc.setLongitude(address.getLongitude());
+				
+				Intent intent = new Intent(FourChoiceActivity.this, RoutePlanDemo.class);
+				//将起终点信息传给导航activity
+				intent.putExtra("startLocation", startLoc);
+				intent.putExtra("endLocation", endLoc);
+				startActivity(intent);
+    			break;
     		default:
-    			Toast.makeText(FourChoiceActivity.this, "请重新选取有效的二维码图片!", 4000).show();
+    			Toast.makeText(FourChoiceActivity.this, "请重新选取有效的地址信息!", Toast.LENGTH_LONG).show();
     		}
         }
     }
 	
-	private Location parseToLocation(String result) {
-		Location location = new Location();
-		String[] strs = result.split("\n");
-		String addr = (strs[0].split("："))[1];	//地址名称
-		String lati = (strs[1].split("："))[1];	//纬度
-		String longi = (strs[2].split("："))[1];	//经度
-		location.setAddress(addr);
-		location.setLatitude(Double.parseDouble(lati));
-		location.setLongitude(Double.parseDouble(longi));
-		return location;
-	}
 
 	/**
 	 * 获取图片

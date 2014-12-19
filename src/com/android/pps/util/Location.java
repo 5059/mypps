@@ -6,6 +6,7 @@ import com.baidu.location.BDLocation;
 
 public class Location implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 纬度
 	 */
@@ -14,6 +15,8 @@ public class Location implements Serializable{
 	 * 经度
 	 */
 	private double longitude;
+	private float radius;
+
 	/**
 	 * 地址名称
 	 */
@@ -23,6 +26,14 @@ public class Location implements Serializable{
 		return address;
 	}
 
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
@@ -30,6 +41,8 @@ public class Location implements Serializable{
 	public Location(){}
 	
 	public Location(BDLocation bdLocation){
+		this.address = bdLocation.getAddrStr();
+		this.radius = bdLocation.getRadius();
 		this.latitude = bdLocation.getLatitude();
 		this.longitude = bdLocation.getLongitude();
 	}

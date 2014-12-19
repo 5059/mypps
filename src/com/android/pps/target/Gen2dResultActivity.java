@@ -35,9 +35,10 @@ public class Gen2dResultActivity extends ActionBarActivity {
 	/**
 	 * 图像的路径
 	 */
-	private String imgPath = null, dateStamp;
+	private String imgPath = null;
 	
 	private Bitmap bitmap = null;
+	private String address;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class Gen2dResultActivity extends ActionBarActivity {
 		
 		Intent intent = getIntent();
 		formatAddressInfo = intent.getStringExtra("formatAddressInfo");
-		dateStamp = intent.getStringExtra("dateStamp");
+		address = intent.getStringExtra("address");
 		
 		//先生成二维码
 		bitmap = QRCodeService.CreateQRCode(formatAddressInfo, null);
@@ -66,7 +67,7 @@ public class Gen2dResultActivity extends ActionBarActivity {
 		if(!isSavedImg){
 			//保存到缓存文件中
 			QRToSDcardSaveService saveService = new QRToSDcardSaveService();
-			imgPath = saveService.saveToSDCard(MainActivity.PATH_CACHE, dateStamp + ".jpg", bitmap);
+			imgPath = saveService.saveToSDCard(MainActivity.PATH_CACHE, address + ".jpg", bitmap);
 		}
 		
 		imgBtn_send.setOnClickListener(new OnClickListener(){
@@ -84,7 +85,7 @@ public class Gen2dResultActivity extends ActionBarActivity {
 				 if(!isSavedImg) {
 					 //保存到文件中
 					 QRToSDcardSaveService saveService = new QRToSDcardSaveService();
-					 imgPath = saveService.saveToSDCard(MainActivity.PATH_IMG, dateStamp + ".jpg", bitmap);
+					 imgPath = saveService.saveToSDCard(MainActivity.PATH_IMG, address + ".jpg", bitmap);
 					 //删除缓存图片
 					 Untilly.deleteFile(imgPath.replace("image", "cache"));
 					 Log.i("IMGGGGG",  isSavedImg +" ddd");

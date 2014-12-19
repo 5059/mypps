@@ -2,6 +2,8 @@ package com.android.pps;
 
 import java.util.HashMap;
 
+import com.baidu.mapapi.SDKInitializer;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -21,10 +23,6 @@ public class PPSApplication extends Application{
 		return map;
 	}
 
-	public void setMap(HashMap<String, Object> map) {
-		this.map = map;
-	}
-	
 	public void put(String key, Object value){
 		map.put(key, value);
 	}
@@ -36,6 +34,6 @@ public class PPSApplication extends Application{
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+		SDKInitializer.initialize(this);
 	}
 }

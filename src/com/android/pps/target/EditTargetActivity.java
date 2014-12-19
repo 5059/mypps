@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.android.pps.R;
 import com.android.pps.db.SqliteUnitl;
+import com.android.pps.util.Address;
 import com.android.pps.util.Location;
 import com.android.pps.util.Untilly;
 
@@ -44,6 +45,9 @@ public class EditTargetActivity extends ActionBarActivity {
 	 */
 	private String imgPath = null, dateStamp;
 	
+	
+	private Address addressT;
+	
 	public EditTargetActivity(){
 		Log.i("凤飞飞凤飞飞", "construction");
 	}
@@ -53,6 +57,7 @@ public class EditTargetActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tag_addinfo);
 		Log.i("凤飞飞凤飞飞", "onCreate");
+		
         // 从savedInstanceState中恢复数据, 如果没有数据需要恢复savedInstanceState为null  
         if (savedInstanceState != null) {  
             isSavedImg = savedInstanceState.getBoolean("isSavedImg");  
@@ -74,16 +79,28 @@ public class EditTargetActivity extends ActionBarActivity {
 		startLocation = (Location) bundle.getSerializable("startLocation");
 		formatAddressInfo = getFormatAddressInfo();
 		
-		textV_addr.setText(address);
-		textV_lat.setText(startLocation.getLatitude() + "");
-		textV_lng.setText(startLocation.getLongitude() + "");
+		Object tempObj = bundle.getSerializable("addressObj");
+		if(tempObj != null){	//如果上一步是选择了一个已存在address
+			addressT = (Address) tempObj;
+			isSavedImg = true;
+		}else{	//上一步是输入一个新的地址名
+			addressT = new Address();
+			addressT.setAddress(address);
+			addressT.setLatitude(startLocation.getLatitude());
+			addressT.setLongitude(startLocation.getLongitude());
+			addressT.setSaveTime(dateStamp);
+		}
+		
+		textV_addr.setText(addressT.getAddress());
+		textV_lat.setText(addressT.getLatitude() + "");
+		textV_lng.setText(addressT.getLongitude() + "");
 		
 		imgBtn_gen2d.setOnClickListener(new OnClickListener(){
 			 @Override
 			 public void onClick(View v){
 				 Intent intent = new Intent(EditTargetActivity.this, Gen2dResultActivity.class);
 				 intent.putExtra("formatAddressInfo", formatAddressInfo);
-				 intent.putExtra("dateStamp", dateStamp);
+				 intent.putExtra("address", addressT.getAddress());
 				 intent.putExtra("isSaved2DImg", isSaved2DImg);
 				 intent.putExtra("imgPath", imgPath);
 				 startActivityForResult(intent, GEN2DRESULT);
@@ -94,10 +111,10 @@ public class EditTargetActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Log.i("IMGGGGG",  isSavedImg +"");
+				Log.i("IMGGGGG",  isSavedImg + "");
 				if(!isSavedImg) {
 					//保存到数据库
-					SqliteUnitl.insertAddress(EditTargetActivity.this, address, startLocation.getLatitude(), startLocation.getLongitude(), dateStamp);
+					SqliteUnitl.insertAddress(EditTargetActivity.this, EditTargetActivity.this.addressT);
 					isSavedImg = true;
 					Toast.makeText(EditTargetActivity.this, "当前位置信息已保存", Toast.LENGTH_SHORT).show();
 				}else{

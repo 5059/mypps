@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,7 +30,8 @@ public class Untilly {
     /**
      * 创建指定文件文件夹
      */
-    private void createDir(Context context) {
+    @SuppressWarnings("unused")
+	private void createDir(Context context) {
     	if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
     		// 创建一个文件夹对象，赋值为外部存储器的目录
             File sdcardDir = Environment.getExternalStorageDirectory();
@@ -151,14 +152,14 @@ public class Untilly {
             intent.putExtra(Intent.EXTRA_STREAM, u);  
             context.startActivity(Intent.createChooser(intent, activityTitle));  
         }else{
-        	Toast.makeText(context, "图片不存在", Toast.LENGTH_SHORT);
+        	Toast.makeText(context, "图片不存在", Toast.LENGTH_SHORT).show();
         }
     } 
 	
     public static void shareText(Context context, String activityTitle, String text){
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/*"); // 纯文本    
-		intent.putExtra(intent.EXTRA_TEXT, text);
+		intent.putExtra(Intent.EXTRA_TEXT, text);
 		((FragmentActivity)context).startActivityForResult(Intent.createChooser(intent, activityTitle), 0);
     }
     
@@ -207,6 +208,22 @@ public class Untilly {
 		}
 	}
 	
+	public static Location parseToLocation(String result) {
+		Location location = new Location();
+		String[] strs = result.split("\n");
+		String addr = (strs[0].split("："))[1];	//地址名称
+		String lati = (strs[1].split("："))[1];	//纬度
+		String longi = (strs[2].split("："))[1];	//经度
+		location.setAddress(addr);
+		location.setLatitude(Double.parseDouble(lati));
+		location.setLongitude(Double.parseDouble(longi));
+		return location;
+	}
+	
+	/**
+	 * 删除指定文件
+	 * @param filePath
+	 */
 	public static void deleteFile(String filePath){
 		File file = new File(filePath);
 		// 有的话，删除
@@ -215,6 +232,11 @@ public class Untilly {
 		}
 	}
 	
+	/**
+	 * 获取格式化的时间戳
+	 * @return
+	 */
+	@SuppressLint("SimpleDateFormat") 
 	public static String getFormateDateStamp(){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		Date date = new Date();

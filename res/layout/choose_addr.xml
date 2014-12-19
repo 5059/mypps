@@ -5,7 +5,7 @@
         android:background="#253853"  
         android:orientation="vertical">  
       
-        <ListView  
+        <com.android.pps.util.SwipeDismissListView  
             android:id="@+id/list"  
             android:layout_width="fill_parent"  
             android:layout_height="fill_parent"  
@@ -15,6 +15,6 @@
             android:dividerHeight="4dp"  
             android:drawSelectorOnTop="false"  
             android:listSelector="#264365" >  
-        </ListView>  
+        </com.android.pps.util.SwipeDismissListView >  
       
     </LinearLayout>  

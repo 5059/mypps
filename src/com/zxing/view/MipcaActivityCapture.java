@@ -67,6 +67,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 		inactivityTimer = new InactivityTimer(this);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
 		super.onResume();

@@ -56,7 +56,7 @@
 	        android:id="@+id/btn_navi"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:background="@drawable/bn_go" />
+	         android:background="@drawable/bn_ok_selector" />
         
         
     </LinearLayout>

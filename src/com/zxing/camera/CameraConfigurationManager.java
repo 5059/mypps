@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 final class CameraConfigurationManager {
 
   private static final String TAG = CameraConfigurationManager.class.getSimpleName();

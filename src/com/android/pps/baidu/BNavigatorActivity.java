@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.baidu.navisdk.BNaviModuleManager;
 import com.baidu.navisdk.BaiduNaviManager;
 import com.baidu.navisdk.comapi.mapcontrol.BNMapController;
 import com.baidu.navisdk.comapi.routeplan.BNRoutePlaner;
@@ -17,7 +16,6 @@ import com.baidu.navisdk.comapi.tts.BNTTSPlayer;
 import com.baidu.navisdk.comapi.tts.BNavigatorTTSPlayer;
 import com.baidu.navisdk.comapi.tts.IBNTTSPlayerListener;
 import com.baidu.navisdk.model.datastruct.LocData;
-import com.baidu.navisdk.model.datastruct.RoutePlanResultItem;
 import com.baidu.navisdk.model.datastruct.SensorData;
 import com.baidu.navisdk.ui.routeguide.BNavigator;
 import com.baidu.navisdk.ui.routeguide.IBNavigatorListener;

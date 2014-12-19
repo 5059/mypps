@@ -11,15 +11,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.android.pps.LocationService;
 import com.android.pps.R;
+import com.android.pps.db.SqliteUnitl;
+import com.android.pps.util.Address;
 
 public class AddTartgetActivity extends ActionBarActivity {
 
 	private ImageButton imgBtn_ok, imgBtn_chooseAddr;
 	private EditText editT_address;
 	private String addrStr;
-
+	private final static int CHOOSE_ADDRESS_CODE = 2;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,13 +34,16 @@ public class AddTartgetActivity extends ActionBarActivity {
 		imgBtn_ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent toAddInfo = new Intent(AddTartgetActivity.this,
-						EditTargetActivity.class);
 				addrStr = editT_address.getText().toString();
 				if("".equals(addrStr) || null == addrStr){
 					Toast.makeText(AddTartgetActivity.this, "地址不能为空", Toast.LENGTH_SHORT).show();
 					return;
+				}else if(SqliteUnitl.isExistedAddress(AddTartgetActivity.this, addrStr)){	//不存在同名地址才能继续
+					Toast.makeText(AddTartgetActivity.this, "地址名已存在", Toast.LENGTH_SHORT).show();
+					return;
 				}
+				Intent toAddInfo = new Intent(AddTartgetActivity.this,
+						EditTargetActivity.class);
 				Bundle bundle = getIntent().getExtras();
 				bundle.putString("address", addrStr);
 				toAddInfo.putExtras(bundle);
@@ -53,7 +58,7 @@ public class AddTartgetActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				Intent toChooseAddr = new Intent(AddTartgetActivity.this,
 						ChooseAddrActivity.class);
-				startActivity(toChooseAddr);
+				startActivityForResult(toChooseAddr, CHOOSE_ADDRESS_CODE);
 			}
 		});
 
@@ -73,4 +78,24 @@ public class AddTartgetActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	 if(resultCode == RESULT_OK){
+         	if(requestCode == CHOOSE_ADDRESS_CODE) {
+         		Bundle dataBundle = data.getExtras();
+				Address address = (Address) dataBundle.getSerializable("addressObj");
+         		
+				Intent toAddInfo = new Intent(AddTartgetActivity.this,
+						EditTargetActivity.class);
+				Bundle bundle = getIntent().getExtras();
+				bundle.putSerializable("addressObj", address);
+				toAddInfo.putExtras(bundle);
+				startActivity(toAddInfo);
+				finish();
+         	}
+         }
+    }
 }

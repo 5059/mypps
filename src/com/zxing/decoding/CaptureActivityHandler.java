@@ -62,7 +62,8 @@ public final class CaptureActivityHandler extends Handler {
     restartPreviewAndDecode();
   }
 
-  @Override
+  @SuppressWarnings("deprecation")
+@Override
   public void handleMessage(Message message) {
     switch (message.what) {
       case R.id.auto_focus:

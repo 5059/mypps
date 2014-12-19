@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.android.pps.R;
 import com.android.pps.util.Location;
-import com.baidu.navisdk.BNaviPoint;
 import com.baidu.navisdk.BaiduNaviManager;
 import com.baidu.navisdk.CommonParams.Const.ModelName;
 import com.baidu.navisdk.CommonParams.NL_Net_Mode;
@@ -36,14 +35,9 @@ import com.baidu.navisdk.model.datastruct.RoutePlanNode;
 import com.baidu.navisdk.ui.routeguide.BNavConfig;
 import com.baidu.navisdk.ui.routeguide.BNavigator;
 import com.baidu.navisdk.ui.widget.RoutePlanObserver;
-import com.baidu.navisdk.util.common.CoordinateTransformUtil;
 import com.baidu.navisdk.util.common.PreferenceHelper;
 import com.baidu.navisdk.util.common.ScreenUtil;
-import com.baidu.nplatform.comapi.basestruct.GeoPoint;
-import com.baidu.nplatform.comapi.map.ItemizedOverlay;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
-import com.baidu.nplatform.comapi.map.Overlay;
-import com.baidu.nplatform.comapi.map.OverlayItem;
 
 /**
  * 通过定位结果显示地图,并规划到目标点的线路,最后进行导航
@@ -54,6 +48,7 @@ public class RoutePlanDemo extends Activity {
 	private RoutePlanModel mRoutePlanModel = null;
 	private MapGLSurfaceView mMapView = null;
 	private Location startLocation, endLocation;
+	private boolean isFirstCal = true;
 	
 	/**
 	 * 起终点坐标地址,x表示纬度(latitude),y表示经度(longitude)
@@ -159,9 +154,13 @@ public class RoutePlanDemo extends Activity {
 		Log.i("RoutePlan", "a onResume");
 		super.onResume();
 		initMapView();
+		mMapView.onResume();
+//		mmMapView.onResume();
 		((ViewGroup) (findViewById(R.id.mapview_layout))).addView(mMapView);
 		BNMapController.getInstance().onResume();
 	}
+
+	
 
     private void initMapView() {
     	Log.i("RoutePlan", "a initMapView");
@@ -177,8 +176,66 @@ public class RoutePlanDemo extends Activity {
         BNSettingManager.getInstance(this).setNaviDayAndNightMode(SettingParams.Action.DAY_NIGHT_MODE_DAY);
 
         BNMapController.getInstance().locateWithAnimation(startY, startX);
+        if(isFirstCal){
+        	startCalcRoute(NL_Net_Mode.NL_Net_Mode_OnLine);
+        }
+        isFirstCal = false;
+
     }
 	
+//	private MapView mmMapView;
+//	private BaiduMap mBaiduMap;
+//	private Marker mMarkerEnd;
+//	private Marker mMarkerSt;
+//	// 初始化全局 bitmap 信息，不用时及时 recycle
+//	BitmapDescriptor bdEnd;
+//	BitmapDescriptor bdSt;
+//	
+//    private void addMarker(){
+//		mmMapView = new MapView(this);
+//		mBaiduMap = mmMapView.getMap();
+//		// 开启定位图层
+//		mBaiduMap.setMyLocationEnabled(true);
+//        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(12.0f);
+//		mBaiduMap.setMapStatus(msu);
+//		
+//		//设置终点位置的图标
+//		LatLng llA = new LatLng(endLocation.getLatitude(), endLocation.getLongitude());
+//    	bdEnd = BitmapDescriptorFactory
+//				.fromResource(R.drawable.icon_en);
+//		OverlayOptions ooA = new MarkerOptions().position(llA).icon(bdEnd)
+//				.zIndex(9).draggable(true);
+//		mMarkerEnd = (Marker) (mBaiduMap.addOverlay(ooA));
+//		
+//		//设置起点位置的图标
+//    	bdSt = BitmapDescriptorFactory
+//				.fromResource(R.drawable.icon_st);
+//		LatLng llB = new LatLng(startLocation.getLatitude(), startLocation.getLongitude());
+//		OverlayOptions ooB = new MarkerOptions().position(llB).icon(bdSt)
+//				.zIndex(9).draggable(true);
+//		mMarkerSt = (Marker) (mBaiduMap.addOverlay(ooB));
+//		
+//		
+//		// 添加文字在目的地处
+//		OverlayOptions ooText = new TextOptions().bgColor(0xAAFFFF00)
+//				.fontSize(24).fontColor(0xFFFF00FF).text("目的地").rotate(-30)
+//				.position(llA);
+//		mBaiduMap.addOverlay(ooText);
+//		
+//		//设置当前位置的定位圆圈
+//		MyLocationData locData = new MyLocationData.Builder()
+//		.accuracy(startLocation.getRadius())
+//		// 此处设置开发者获取到的方向信息，顺时针0-360
+//		.direction(100).latitude(startLocation.getLatitude())
+//		.longitude(startLocation.getLongitude()).build();
+//		mBaiduMap.setMyLocationData(locData);
+//		
+//		LatLng ll = new LatLng(startLocation.getLatitude(),
+//				startLocation.getLongitude());
+//		MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//		mBaiduMap.animateMapStatus(u);
+//    }
+    
 	/**
 	 * 更新指南针位置
 	 */
@@ -195,10 +252,10 @@ public class RoutePlanDemo extends Activity {
 
 		//起点
 		RoutePlanNode startNode = new RoutePlanNode(startX, startY,
-				RoutePlanNode.FROM_MY_POSITION, "华侨城", "华侨城");
+				RoutePlanNode.FROM_MY_POSITION, startLocation.getAddress(), startLocation.getAddress());
 		//终点
 		RoutePlanNode endNode = new RoutePlanNode(endX, endY,
-				RoutePlanNode.FROM_MAP_POINT, "厦门大学", "厦门大学");
+				RoutePlanNode.FROM_MAP_POINT, endLocation.getAddress(), endLocation.getAddress());
 		//将起终点添加到nodeList
 		ArrayList<RoutePlanNode> nodeList = new ArrayList<RoutePlanNode>(2);
 		nodeList.add(startNode);
@@ -208,9 +265,10 @@ public class RoutePlanDemo extends Activity {
 		BNRoutePlaner.getInstance().setCalcMode(this.routePlanMode);
 		// 设置算路结果回调
 		BNRoutePlaner.getInstance().setRouteResultObserver(mRouteResultObserver);
+		BNRoutePlaner.getInstance().zoomToRouteBound();
 		// 设置起终点并算路
-		boolean ret = BNRoutePlaner.getInstance().setPointsToCalcRoute(
-				nodeList, netmode);
+		boolean ret = BNRoutePlaner.getInstance().setPointsToCalcRoute(nodeList, netmode);
+		
 		if(!ret){
 			Toast.makeText(this, "规划失败", Toast.LENGTH_SHORT).show();
 		}
@@ -288,7 +346,6 @@ public class RoutePlanDemo extends Activity {
 
 		@Override
 		public void onRoutePlanFail() {
-			// TODO Auto-generated method stub
 			Log.i("RoutePlan", "a onRoutePlanFail");
 		}
 
