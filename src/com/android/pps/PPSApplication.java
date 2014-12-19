@@ -1,9 +1,7 @@
 package com.android.pps;
 
 import java.util.HashMap;
-
 import com.baidu.mapapi.SDKInitializer;
-
 import android.app.Application;
 import android.util.Log;
 

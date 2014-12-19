@@ -1,7 +1,6 @@
 package com.android.pps.baidu;
 
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -15,7 +14,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.android.pps.R;
 import com.android.pps.util.Location;
 import com.baidu.navisdk.BaiduNaviManager;

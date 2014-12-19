@@ -16,10 +16,7 @@ import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-/**
- * 
- *
- */
+
 public class SwipeDismissListView extends ListView {
 	/**
 	 * 认为是用户滑动的最小距离
