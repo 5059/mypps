@@ -68,6 +68,12 @@ public class RoutePlanDemo extends Activity {
 		//获取起终点坐标
 		startLocation = (Location)getIntent().getSerializableExtra("startLocation");
 		endLocation = (Location)getIntent().getSerializableExtra("endLocation");
+		
+//		Log.d("qr", "start.Lati: " + startLocation.getLatitude());
+//		Log.d("qr", "start.Long: " + startLocation.getLongitude());
+//		Log.d("qr", "end.Lati: " + endLocation.getLatitude());
+//		Log.d("qr", "end.Long: " + endLocation.getLongitude());
+		
 		startX = (int) (startLocation.getLatitude() * 1e5);
 		startY = (int) (startLocation.getLongitude() * 1e5);
 		endX = (int) (endLocation.getLatitude() * 1e5);

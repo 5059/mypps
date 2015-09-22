@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.android.pps.R;
@@ -137,6 +138,14 @@ public final class ViewfinderView extends View {
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 
+//		Log.d("qr", "frame.top: " + frame.top);
+//		Log.d("qr", "frame.bottom: " + frame.bottom);
+//		Log.d("qr", "frame.left: " + frame.left);
+//		Log.d("qr", "frame.right: " + frame.right);
+//		
+//		Log.d("qr", "canvas.Width: " + width);
+//		Log.d("qr", "canvas.Height: " + height);
+		
 		paint.setColor(resultBitmap != null ? resultColor : maskColor);
 		
 		//画出扫描框外面的阴影部分，共四个部分，扫描框的上面到屏幕上面，扫描框的下面到屏幕下面
@@ -199,11 +208,13 @@ public final class ViewfinderView extends View {
             canvas.drawBitmap(((BitmapDrawable)(getResources().getDrawable(R.drawable.a0j))).getBitmap(), null, lineRect, paint); 
 			
 			//画扫描框下面的字
+            String text = getResources().getString(R.string.scan_text);
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(TEXT_SIZE * density);
 			paint.setAlpha(0x40);
 			paint.setTypeface(Typeface.create("System", Typeface.BOLD));
-			canvas.drawText(getResources().getString(R.string.scan_text), frame.left, (float) (frame.bottom + (float)TEXT_PADDING_TOP *density), paint);
+			float textWidth = paint.measureText(text);	//计算出文字的宽度
+			canvas.drawText(text, (width - textWidth) / 2, (float) (frame.bottom + (float)TEXT_PADDING_TOP *density), paint);
 			
 			//画出扫描时跳动的点
 //			Collection<ResultPoint> currentPossible = possibleResultPoints;

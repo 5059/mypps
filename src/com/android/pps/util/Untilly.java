@@ -212,8 +212,8 @@ public class Untilly {
 		Location location = new Location();
 		String[] strs = result.split("\n");
 		String addr = (strs[0].split("："))[1];	//地址名称
-		String lati = (strs[1].split("："))[1];	//纬度
-		String longi = (strs[2].split("："))[1];	//经度
+		String longi = (strs[1].split("："))[1];	//经度
+		String lati = (strs[2].split("："))[1];	//纬度
 		location.setAddress(addr);
 		location.setLatitude(Double.parseDouble(lati));
 		location.setLongitude(Double.parseDouble(longi));

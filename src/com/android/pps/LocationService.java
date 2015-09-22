@@ -124,14 +124,14 @@ public class LocationService implements Runnable{
                     @Override
                     public void onAuthResult(int status, String msg) {
                     	Log.i("DemoMain", "a onAuthResult");
-//                        String str = null;
-//                        if (0 == status) {
-//                            str = "key校验成功!";
-//                        } else {
-//                            str = "key校验失败, " + msg;
-//                        }
-//                        Toast.makeText(LocationService.this.context, str,
-//                                Toast.LENGTH_LONG).show();
+                        String str = null;
+                        if (0 == status) {
+                            str = "key校验成功!";
+                        } else {
+                            str = "key校验失败, " + msg;
+                        }
+                        Toast.makeText(LocationService.this.context, str,
+                                Toast.LENGTH_LONG).show();
                     }
         });	
 	}
